@@ -8,14 +8,13 @@ class UserTestCase(TestCase):
             email = "amber@nickelfox.com",
             user_type = User.AUTHOR
         )
-        self.author = User.objects.create(
+        self.publisher = User.objects.create(
             username = "Mark",
             email = "amber+1@nickelfox.com",
-            user_type = User.AUTHOR
+            user_type = User.PUBLISHER
         )
-    def test_get_authors(self):
-        self.assertEquals(User.get_authors(), 1)
-
-    def test_can_write_books(self):
-        self.assertTrue(self.author.can_write_books())
-        self.assertFalse(self.publisher.can_write_books())
+    def test_get_publisher(self):
+        self.assertEquals(User.PUBLISHER, 2)
+    
+    def test_get_author(self):
+        self.assertEqual(User.AUTHOR, 1)
