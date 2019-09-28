@@ -1,6 +1,7 @@
-from django.test import  TestCase
+from django.test import  TestCase, Client
 from .models import User
 from .forms import RegistrationForm
+from django.core.urlresolvers import reverse
 
 class UserTestCase(TestCase):
     def setUp(self):
@@ -49,4 +50,56 @@ class TestRegistrationForm(TestCase):
         form = RegistrationForm(data = valid_data)
         form.is_valid()
         self.assertFalse(form.errors)
+    
+class TestUserRegistrationView(TestCase):
+    
+    def setUp(self):
+        self.client = Client()
 
+        def test_registration(self):
+            url = reverse('register')
+
+            response = self.client.get(url)
+            self.assertEqual(response.status, 200)
+
+            response = self.client.post(url, {})
+            self.assertEqual(response.status, 200)
+
+            exp_data = {
+            'error': True,
+            'errors': {
+                'username': 'This field is required',
+                'password': 'This field is required',
+                'confirm': 'This field is required',
+            }
+            }
+            self.asssertEqual(exp_data, response.json())
+
+            req_data = {
+                'username': 'user@test.com',
+                'password': 'secret',
+                'confirm': 'secret1',
+            }
+            response = self.client.post(url, req_data)
+            self.assertEqual(response.status, 200)
+            exp_data = {
+                'error': True,
+                'errors': {
+                    'confirm': 'Passwords mismatched'
+                }
+            }
+            self.asssertEqual(exp_data, response.json())
+
+            req_data = {
+                'username': 'user@test.com',
+                'password': 'secret',
+                'confirm': 'secret',
+            }
+            response = self.client.post(url, req_data)
+            self.assertEqual(response.status, 200)
+            exp_data = {
+                'error': False,
+                'message': 'Success, Please login'
+            }
+            self.asssertEqual(exp_data, response.json())
+            self.assertEqual(User.objects.count(), 1)
