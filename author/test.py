@@ -1,7 +1,7 @@
 from django.test import  TestCase, Client
 from .models import User
 from .forms import RegistrationForm
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 class UserTestCase(TestCase):
     def setUp(self):
