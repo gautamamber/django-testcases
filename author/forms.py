@@ -10,7 +10,7 @@ class RegistrationForm(forms.Form):
         password = self.cleaned_data.get('password')
         confirm = self.cleaned_data.get('confirm')
         if confirm != password:
-        raise forms.ValidationError({
-            'confirm': 'Passwords mismatched'
-        })
+            raise forms.ValidationError({
+                'confirm': 'Passwords mismatched'
+            })
         return self.cleaned_data

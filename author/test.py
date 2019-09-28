@@ -1,5 +1,6 @@
 from django.test import  TestCase
 from .models import User
+from .forms import RegistrationForm
 
 class UserTestCase(TestCase):
     def setUp(self):
@@ -25,3 +26,27 @@ class UserTestCase(TestCase):
     
     def test_can_write_2(self):
         self.assertFalse(self.publisher.can_write_books())
+    
+class TestRegistrationForm(TestCase):
+
+    def test_registration_form(self):
+        invalid_data = {
+                "username" : "amber gautam",
+                "password" : "Amber1998@",
+                "confirm" : "Amber"
+        }
+
+        form = RegistrationForm(data = invalid_data)
+        form.is_valid()
+        self.assertTrue(form.errors)
+    
+        valid_data = {
+                "username" : "amber gautam",
+                "password" : "Amber1998@",
+                "confirm" : "Amber1998@"
+        }
+
+        form = RegistrationForm(data = valid_data)
+        form.is_valid()
+        self.assertFalse(form.errors)
+
