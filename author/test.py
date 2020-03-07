@@ -73,7 +73,7 @@ class TestUserRegistrationView(TestCase):
                 'confirm': 'This field is required',
             }
             }
-            self.asssertEqual(exp_data, response.json())
+            self.assertEqual(exp_data, response.json())
 
             req_data = {
                 'username': 'user@test.com',
@@ -88,7 +88,7 @@ class TestUserRegistrationView(TestCase):
                     'confirm': 'Passwords mismatched'
                 }
             }
-            self.asssertEqual(exp_data, response.json())
+            self.assertEqual(exp_data, response.json())
 
             req_data = {
                 'username': 'user@test.com',
@@ -101,5 +101,5 @@ class TestUserRegistrationView(TestCase):
                 'error': False,
                 'message': 'Success, Please login'
             }
-            self.asssertEqual(exp_data, response.json())
+            self.assertEqual(exp_data, response.json())
             self.assertEqual(User.objects.count(), 1)
